@@ -59,28 +59,31 @@ namespace EwatchDisconnectionWizard.Components
                             {
                                 if (aiitem.NotifyFlag)//AI點位需要發報
                                 {
-                                    var TimeValue = MySqlMethod.Ai_Time(aiitem);
-                                    if (TimeValue == null || TimeValue >= aiitem.TimeoutSpan)
+                                    if (MySqlMethod.AI64Load(aiitem))//檢查即時數值是否超過時間
                                     {
-                                        NotifyTypeEnum notifyTypeEnum = (NotifyTypeEnum)caseitem.NotifyTypeEnum;
-                                        switch (notifyTypeEnum)
+                                        //var TimeValue = MySqlMethod.Ai_Time(aiitem);//檢查發報數值是否達到
+                                        //if (TimeValue == null || TimeValue >= aiitem.TimeoutSpan)
                                         {
-                                            case NotifyTypeEnum.None:
-                                                break;
-                                            case NotifyTypeEnum.Line:
-                                                {
-                                                    LineNotifyClass lineNotifyClass = new LineNotifyClass();
-                                                    lineNotifyClass.LineNotifyFunction(caseitem.NotifyToken, $"設備名稱:{aiitem.AiName} 上傳逾時請檢查");
-                                                }
-                                                break;
-                                            case NotifyTypeEnum.Telegram:
-                                                {
-                                                    TelegramBotClass telegramBotClass = new TelegramBotClass(caseitem.NotifyApi) { Chat_ID = caseitem.NotifyToken };
-                                                    telegramBotClass.Send_Message_Group($"設備名稱:{aiitem.AiName} 上傳逾時請檢查");
-                                                }
-                                                break;
+                                            NotifyTypeEnum notifyTypeEnum = (NotifyTypeEnum)caseitem.NotifyTypeEnum;
+                                            switch (notifyTypeEnum)
+                                            {
+                                                case NotifyTypeEnum.None:
+                                                    break;
+                                                case NotifyTypeEnum.Line:
+                                                    {
+                                                        LineNotifyClass lineNotifyClass = new LineNotifyClass();
+                                                        lineNotifyClass.LineNotifyFunction(caseitem.NotifyToken, $"設備名稱:{aiitem.AiName} \r最後上傳時間 : {MySqlMethod.AI_LastTime(aiitem)}\r上傳逾時請檢查");
+                                                    }
+                                                    break;
+                                                case NotifyTypeEnum.Telegram:
+                                                    {
+                                                        TelegramBotClass telegramBotClass = new TelegramBotClass(caseitem.NotifyApi) { Chat_ID = caseitem.NotifyToken };
+                                                        telegramBotClass.Send_Message_Group($"設備名稱:{aiitem.AiName} \r最後上傳時間 : {MySqlMethod.AI_LastTime(aiitem)}\r上傳逾時請檢查");
+                                                    }
+                                                    break;
+                                            }
+                                            MySqlMethod.UpdataAi_Time(aiitem);
                                         }
-                                        MySqlMethod.UpdataAi_Time(aiitem);
                                     }
                                 }
                             }
@@ -89,28 +92,31 @@ namespace EwatchDisconnectionWizard.Components
                             {
                                 if (electricitem.NotifyFlag)//電表點位需要發報
                                 {
-                                    var TimeValue = MySqlMethod.ElectricMeter_Time(electricitem);
-                                    if (TimeValue == null || TimeValue >= electricitem.TimeoutSpan)
+                                    if (MySqlMethod.ElectricMeterLoad(electricitem))
                                     {
-                                        NotifyTypeEnum notifyTypeEnum = (NotifyTypeEnum)caseitem.NotifyTypeEnum;
-                                        switch (notifyTypeEnum)
+                                        //var TimeValue = MySqlMethod.ElectricMeter_Time(electricitem);
+                                        //if (TimeValue == null || TimeValue >= electricitem.TimeoutSpan)
                                         {
-                                            case NotifyTypeEnum.None:
-                                                break;
-                                            case NotifyTypeEnum.Line:
-                                                {
-                                                    LineNotifyClass lineNotifyClass = new LineNotifyClass();
-                                                    lineNotifyClass.LineNotifyFunction(caseitem.NotifyToken, $"設備名稱:{electricitem.ElectricName} 上傳逾時請檢查");
-                                                }
-                                                break;
-                                            case NotifyTypeEnum.Telegram:
-                                                {
-                                                    TelegramBotClass telegramBotClass = new TelegramBotClass(caseitem.NotifyApi) { Chat_ID = caseitem.NotifyToken };
-                                                    telegramBotClass.Send_Message_Group($"設備名稱:{electricitem.ElectricName} 上傳逾時請檢查");
-                                                }
-                                                break;
+                                            NotifyTypeEnum notifyTypeEnum = (NotifyTypeEnum)caseitem.NotifyTypeEnum;
+                                            switch (notifyTypeEnum)
+                                            {
+                                                case NotifyTypeEnum.None:
+                                                    break;
+                                                case NotifyTypeEnum.Line:
+                                                    {
+                                                        LineNotifyClass lineNotifyClass = new LineNotifyClass();
+                                                        lineNotifyClass.LineNotifyFunction(caseitem.NotifyToken, $"設備名稱:{electricitem.ElectricName} \r最後上傳時間 : {MySqlMethod.ElectricMeter_LastTime(electricitem)}\r上傳逾時請檢查");
+                                                    }
+                                                    break;
+                                                case NotifyTypeEnum.Telegram:
+                                                    {
+                                                        TelegramBotClass telegramBotClass = new TelegramBotClass(caseitem.NotifyApi) { Chat_ID = caseitem.NotifyToken };
+                                                        telegramBotClass.Send_Message_Group($"設備名稱:{electricitem.ElectricName} \r最後上傳時間 : {MySqlMethod.ElectricMeter_LastTime(electricitem)}\r上傳逾時請檢查");
+                                                    }
+                                                    break;
+                                            }
+                                            MySqlMethod.UpdataElectricMeter_Time(electricitem);
                                         }
-                                        MySqlMethod.UpdataElectricMeter_Time(electricitem);
                                     }
                                 }
                             }

@@ -103,7 +103,7 @@ namespace EwatchDisconnectionWizard.Methods
             return Flag;
         }
         /// <summary>
-        /// AI點位最後上傳時間
+        /// 更新AI點位最後上傳時間
         /// </summary>
         /// <param name="setting"></param>
         public void UpdataAi_Time(AiSetting setting)
@@ -115,7 +115,21 @@ namespace EwatchDisconnectionWizard.Methods
             }
         }
         /// <summary>
-        /// AI上傳間隔時間
+        /// 查詢AI點位上傳時間
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public DateTime AI_LastTime(AiSetting setting)
+        {
+            using (var Conn = new MySqlConnection(Webscsb.ConnectionString))
+            {
+                string sql = "SELECT ttimen FROM Ai64 Where CaseNo = @CaseNo AND AiNo = @AiNo";
+                var  value = Conn.QuerySingle<DateTime>(sql, new {  CaseNo = setting.CaseNo, AiNo = setting.AiNo });
+                return value;
+            }
+        }
+        /// <summary>
+        /// AI上傳間隔時間(未使用)
         /// </summary>
         /// <returns></returns>
         public int? Ai_Time(AiSetting setting)
@@ -184,19 +198,48 @@ namespace EwatchDisconnectionWizard.Methods
             return Flag;
         }
         /// <summary>
-        /// 電表點位最後上傳時間
+        /// 更新電表點位最後上傳時間
         /// </summary>
         /// <param name="setting"></param>
         public void UpdataElectricMeter_Time(ElectricSetting setting)
         {
             using (var Conn = new MySqlConnection(scsb.ConnectionString))
             {
-                string sql = "UPDATE ElectricSetting SET SendTime = @ SendTime Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo";
+                string sql = "UPDATE ElectricSetting SET SendTime = @SendTime Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo";
                 var value = Conn.Execute(sql, new { SendTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo });
             }
         }
         /// <summary>
-        /// 電表上傳間隔時間
+        /// 查詢電表點位上傳時間
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public DateTime ElectricMeter_LastTime(ElectricSetting setting)
+        {
+            using (var Conn = new MySqlConnection(Webscsb.ConnectionString))
+            {
+
+                string sql = string.Empty;
+                ElectricPhaseTypeEnum phaseTypeEnum = (ElectricPhaseTypeEnum)setting.PhaseTypeEnum;
+                switch (phaseTypeEnum)
+                {
+                    case ElectricPhaseTypeEnum.Three:
+                        {
+                            sql = "SELECT ttimen FROM ThreePhaseElectricMeter Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo";
+                        }
+                        break;
+                    case ElectricPhaseTypeEnum.Single:
+                        {
+                            sql = "SELECT ttimen FROM SinglePhaseElectricMeter Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo";
+                        }
+                        break;
+                }
+                var value = Conn.QuerySingle<DateTime>(sql, new { CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo });
+                return value;
+            }
+        }
+        /// <summary>
+        /// 電表上傳間隔時間(未使用)
         /// </summary>
         /// <returns></returns>
         public int? ElectricMeter_Time(ElectricSetting setting)
