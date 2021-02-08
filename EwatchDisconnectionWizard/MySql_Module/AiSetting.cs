@@ -29,9 +29,13 @@ namespace EwatchDisconnectionWizard.MySql_Module
         /// </summary>
         public bool NotifyFlag { get; set; }
         /// <summary>
-        /// 斷線發報時間(分)
+        /// 斷線發報時間(時)
         /// </summary>
         public int TimeoutSpan { get; set; }
+        /// <summary>
+        /// 斷線發報時間(分)
+        /// </summary>
+        public int MTimeoutSpan { get; set; }
         /// <summary>
         /// 最後發報時間
         /// </summary>

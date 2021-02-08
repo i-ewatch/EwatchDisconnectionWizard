@@ -86,11 +86,11 @@ namespace EwatchDisconnectionWizard.Methods
             bool Flag = false;
             using (var Conn = new MySqlConnection(Webscsb.ConnectionString))
             {
-                string sql = "SELECT TIMESTAMPDIFF(HOUR,(SELECT ttimen FROM Ai64 Where CaseNo = @CaseNo AND AiNo = @AiNo),@Datetime)";
+                string sql = "SELECT TIMESTAMPDIFF(MINUTE,(SELECT ttimen FROM Ai64 Where CaseNo = @CaseNo AND AiNo = @AiNo),@Datetime)";
                 var value = Conn.QuerySingle<int?>(sql, new { CaseNo = setting.CaseNo, AiNo = setting.AiNo, Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
                 if (value != null)
                 {
-                    if (value >= setting.TimeoutSpan)
+                    if (value >= setting.MTimeoutSpan)
                     {
                         Flag = true;
                     }
@@ -106,12 +106,19 @@ namespace EwatchDisconnectionWizard.Methods
         /// 更新AI點位最後上傳時間
         /// </summary>
         /// <param name="setting"></param>
-        public void UpdataAi_Time(AiSetting setting)
+        public void UpdataAi_Time(AiSetting setting, bool TimeFlag)
         {
             using (var Conn = new MySqlConnection(scsb.ConnectionString))
             {
                 string sql = "UPDATE AiSetting SET SendTime = @SendTime WHERE CaseNo = @CaseNo AND AiNo = @AiNo";
-                var value = Conn.Execute(sql, new { SendTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, AiNo = setting.AiNo });
+                if (TimeFlag)
+                {
+                    var value = Conn.Execute(sql, new { SendTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, AiNo = setting.AiNo });
+                }
+                else
+                {
+                    var value = Conn.Execute(sql, new { SendTime = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, AiNo = setting.AiNo });
+                }
             }
         }
         /// <summary>
@@ -124,12 +131,12 @@ namespace EwatchDisconnectionWizard.Methods
             using (var Conn = new MySqlConnection(Webscsb.ConnectionString))
             {
                 string sql = "SELECT ttimen FROM Ai64 Where CaseNo = @CaseNo AND AiNo = @AiNo";
-                var  value = Conn.QuerySingle<DateTime>(sql, new {  CaseNo = setting.CaseNo, AiNo = setting.AiNo });
+                var value = Conn.QuerySingle<DateTime>(sql, new { CaseNo = setting.CaseNo, AiNo = setting.AiNo });
                 return value;
             }
         }
         /// <summary>
-        /// AI上傳間隔時間(未使用)
+        /// AI上傳間隔時間
         /// </summary>
         /// <returns></returns>
         public int? Ai_Time(AiSetting setting)
@@ -173,19 +180,19 @@ namespace EwatchDisconnectionWizard.Methods
                 {
                     case ElectricPhaseTypeEnum.Three:
                         {
-                            sql = "SELECT TIMESTAMPDIFF(HOUR,(SELECT ttimen FROM ThreePhaseElectricMeter Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo),@Datetime)";
+                            sql = "SELECT TIMESTAMPDIFF(MINUTE,(SELECT ttimen FROM ThreePhaseElectricMeter Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo),@Datetime)";
                         }
                         break;
                     case ElectricPhaseTypeEnum.Single:
                         {
-                            sql = "SELECT TIMESTAMPDIFF(HOUR,(SELECT ttimen FROM SinglePhaseElectricMeter Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo),@Datetime)";
+                            sql = "SELECT TIMESTAMPDIFF(MINUTE,(SELECT ttimen FROM SinglePhaseElectricMeter Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo),@Datetime)";
                         }
                         break;
                 }
                 var value = Conn.QuerySingle<int?>(sql, new { CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo, Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
                 if (value != null)
                 {
-                    if (value >= setting.TimeoutSpan)
+                    if (value >= setting.MTimeoutSpan)
                     {
                         Flag = true;
                     }
@@ -201,12 +208,19 @@ namespace EwatchDisconnectionWizard.Methods
         /// 更新電表點位最後上傳時間
         /// </summary>
         /// <param name="setting"></param>
-        public void UpdataElectricMeter_Time(ElectricSetting setting)
+        public void UpdataElectricMeter_Time(ElectricSetting setting, bool TimeFlag)
         {
             using (var Conn = new MySqlConnection(scsb.ConnectionString))
             {
                 string sql = "UPDATE ElectricSetting SET SendTime = @SendTime Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo";
-                var value = Conn.Execute(sql, new { SendTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo });
+                if (TimeFlag)
+                {
+                    var value = Conn.Execute(sql, new { SendTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo });
+                }
+                else
+                {
+                    var value = Conn.Execute(sql, new { SendTime = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd HH:mm:ss"), CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo });
+                }
             }
         }
         /// <summary>
@@ -239,7 +253,7 @@ namespace EwatchDisconnectionWizard.Methods
             }
         }
         /// <summary>
-        /// 電表上傳間隔時間(未使用)
+        /// 電表上傳間隔時間
         /// </summary>
         /// <returns></returns>
         public int? ElectricMeter_Time(ElectricSetting setting)
@@ -248,6 +262,7 @@ namespace EwatchDisconnectionWizard.Methods
             using (var Conn = new MySqlConnection(scsb.ConnectionString))
             {
                 string sql = "SELECT TIMESTAMPDIFF(HOUR,(SELECT SendTime FROM ElectricSetting Where CaseNo = @CaseNo AND ElectricNo = @ElectricNo),@Datetime)";
+
                 value = Conn.QuerySingle<int?>(sql, new { CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo, Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
             }
             return value;

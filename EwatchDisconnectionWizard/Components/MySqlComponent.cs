@@ -61,8 +61,8 @@ namespace EwatchDisconnectionWizard.Components
                                 {
                                     if (MySqlMethod.AI64Load(aiitem))//檢查即時數值是否超過時間
                                     {
-                                        //var TimeValue = MySqlMethod.Ai_Time(aiitem);//檢查發報數值是否達到
-                                        //if (TimeValue == null || TimeValue >= aiitem.TimeoutSpan)
+                                        var TimeValue = MySqlMethod.Ai_Time(aiitem);//檢查發報數值是否達到
+                                        if (TimeValue == null || TimeValue >= aiitem.TimeoutSpan)
                                         {
                                             NotifyTypeEnum notifyTypeEnum = (NotifyTypeEnum)caseitem.NotifyTypeEnum;
                                             switch (notifyTypeEnum)
@@ -82,8 +82,12 @@ namespace EwatchDisconnectionWizard.Components
                                                     }
                                                     break;
                                             }
-                                            MySqlMethod.UpdataAi_Time(aiitem);
+                                            MySqlMethod.UpdataAi_Time(aiitem, true);
                                         }
+                                    }
+                                    else
+                                    {
+                                        MySqlMethod.UpdataAi_Time(aiitem, false);
                                     }
                                 }
                             }
@@ -94,8 +98,8 @@ namespace EwatchDisconnectionWizard.Components
                                 {
                                     if (MySqlMethod.ElectricMeterLoad(electricitem))
                                     {
-                                        //var TimeValue = MySqlMethod.ElectricMeter_Time(electricitem);
-                                        //if (TimeValue == null || TimeValue >= electricitem.TimeoutSpan)
+                                        var TimeValue = MySqlMethod.ElectricMeter_Time(electricitem);
+                                        if (TimeValue == null || TimeValue >= electricitem.TimeoutSpan)
                                         {
                                             NotifyTypeEnum notifyTypeEnum = (NotifyTypeEnum)caseitem.NotifyTypeEnum;
                                             switch (notifyTypeEnum)
@@ -115,8 +119,12 @@ namespace EwatchDisconnectionWizard.Components
                                                     }
                                                     break;
                                             }
-                                            MySqlMethod.UpdataElectricMeter_Time(electricitem);
+                                            MySqlMethod.UpdataElectricMeter_Time(electricitem, true);
                                         }
+                                    }
+                                    else
+                                    {
+                                        MySqlMethod.UpdataElectricMeter_Time(electricitem, false);
                                     }
                                 }
                             }
