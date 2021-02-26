@@ -18,6 +18,10 @@ namespace EwatchDisconnectionWizard.Methods
         /// </summary>
         public MySqlConnectionStringBuilder Webscsb { get; set; } = null;
         /// <summary>
+        /// Log資料庫連接字串
+        /// </summary>
+        public MySqlConnectionStringBuilder Logscsb { get; set; } = null;
+        /// <summary>
         /// LOG資料庫連接字串
         /// </summary>
         public MySqlConnectionStringBuilder scsb { get; set; } = null;
@@ -32,6 +36,14 @@ namespace EwatchDisconnectionWizard.Methods
                 scsb = new MySqlConnectionStringBuilder()
                 {
                     Database = mySqlSetting.InitialCatalog + "db",
+                    Server = mySqlSetting.DataSource,
+                    UserID = mySqlSetting.UserID,
+                    Password = mySqlSetting.Password,
+                    CharacterSet = "utf8"
+                };
+                Logscsb = new MySqlConnectionStringBuilder()
+                {
+                    Database = mySqlSetting.InitialCatalog + "Log",
                     Server = mySqlSetting.DataSource,
                     UserID = mySqlSetting.UserID,
                     Password = mySqlSetting.Password,
@@ -62,6 +74,7 @@ namespace EwatchDisconnectionWizard.Methods
             return setting;
         }
 
+        #region AI
         /// <summary>
         /// AI資訊
         /// </summary>
@@ -149,7 +162,9 @@ namespace EwatchDisconnectionWizard.Methods
             }
             return value;
         }
+        #endregion
 
+        #region 電表
         /// <summary>
         /// 電表資訊
         /// </summary>
@@ -266,6 +281,109 @@ namespace EwatchDisconnectionWizard.Methods
                 value = Conn.QuerySingle<int?>(sql, new { CaseNo = setting.CaseNo, ElectricNo = setting.ElectricNo, Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
             }
             return value;
+        }
+        #endregion
+
+        /// <summary>
+        /// AI點為設定查詢是否需要比較
+        /// </summary>
+        /// <returns></returns>
+        public List<AiConfig> AiConfig_Compare_Load()
+        {
+            List<AiConfig> aiConfigs = null;
+            using (var conn = new MySqlConnection(scsb.ConnectionString))
+            {
+                string sql = "SELECT * FROM AiConfig WHERE CompareFlag = true";
+                aiConfigs = conn.Query<AiConfig>(sql).ToList();
+            }
+            return aiConfigs;
+        }
+        public AI64 Ai64web(AiConfig config)
+        {
+            using (var conn = new MySqlConnection(Webscsb.ConnectionString))
+            {
+                string sql = "SELECT * FROM Ai64 WHERE CaseNo = @CaseNo AND AiNo = @AiNo";
+                var data = conn.QuerySingle<AI64>(sql, new { config.CaseNo, config.AiNo });
+                return data;
+            }
+        }
+        /// <summary>
+        /// 上下限比較紀錄
+        /// </summary>
+        /// <param name="config">AI點為設定資訊</param>
+        public void Alarm_Procedure(AiConfig config, AI64 aI64)
+        {
+            using (var conn = new MySqlConnection(Logscsb.ConnectionString))
+            {
+                string Procedure = "AiAlarmProcedure";
+                decimal[] value = new decimal[64];
+                int i = 0;
+                value[i] = aI64.Ai1; i++;
+                value[i] = aI64.Ai2; i++;
+                value[i] = aI64.Ai3; i++;
+                value[i] = aI64.Ai4; i++;
+                value[i] = aI64.Ai5; i++;
+                value[i] = aI64.Ai6; i++;
+                value[i] = aI64.Ai7; i++;
+                value[i] = aI64.Ai8; i++;
+                value[i] = aI64.Ai9; i++;
+                value[i] = aI64.Ai10; i++;
+                value[i] = aI64.Ai11; i++;
+                value[i] = aI64.Ai12; i++;
+                value[i] = aI64.Ai13; i++;
+                value[i] = aI64.Ai14; i++;
+                value[i] = aI64.Ai15; i++;
+                value[i] = aI64.Ai16; i++;
+                value[i] = aI64.Ai17; i++;
+                value[i] = aI64.Ai18; i++;
+                value[i] = aI64.Ai19; i++;
+                value[i] = aI64.Ai20; i++;
+                value[i] = aI64.Ai21; i++;
+                value[i] = aI64.Ai22; i++;
+                value[i] = aI64.Ai23; i++;
+                value[i] = aI64.Ai24; i++;
+                value[i] = aI64.Ai25; i++;
+                value[i] = aI64.Ai26; i++;
+                value[i] = aI64.Ai27; i++;
+                value[i] = aI64.Ai28; i++;
+                value[i] = aI64.Ai29; i++;
+                value[i] = aI64.Ai30; i++;
+                value[i] = aI64.Ai31; i++;
+                value[i] = aI64.Ai32; i++;
+                value[i] = aI64.Ai33; i++;
+                value[i] = aI64.Ai34; i++;
+                value[i] = aI64.Ai35; i++;
+                value[i] = aI64.Ai36; i++;
+                value[i] = aI64.Ai37; i++;
+                value[i] = aI64.Ai38; i++;
+                value[i] = aI64.Ai39; i++;
+                value[i] = aI64.Ai40; i++;
+                value[i] = aI64.Ai41; i++;
+                value[i] = aI64.Ai42; i++;
+                value[i] = aI64.Ai43; i++;
+                value[i] = aI64.Ai44; i++;
+                value[i] = aI64.Ai45; i++;
+                value[i] = aI64.Ai46; i++;
+                value[i] = aI64.Ai47; i++;
+                value[i] = aI64.Ai48; i++;
+                value[i] = aI64.Ai49; i++;
+                value[i] = aI64.Ai50; i++;
+                value[i] = aI64.Ai51; i++;
+                value[i] = aI64.Ai52; i++;
+                value[i] = aI64.Ai53; i++;
+                value[i] = aI64.Ai54; i++;
+                value[i] = aI64.Ai55; i++;
+                value[i] = aI64.Ai56; i++;
+                value[i] = aI64.Ai57; i++;
+                value[i] = aI64.Ai58; i++;
+                value[i] = aI64.Ai59; i++;
+                value[i] = aI64.Ai60; i++;
+                value[i] = aI64.Ai61; i++;
+                value[i] = aI64.Ai62; i++;
+                value[i] = aI64.Ai63; i++;
+                value[i] = aI64.Ai64;
+                conn.Execute(Procedure, new { nowTime = aI64.ttime, CaseNo1 = config.CaseNo, AiNo1 = config.AiNo, Ai1 = config.Ai, NowData = value[Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(config.Ai, @"[^0-9]+", "")) - 1] }, commandType: System.Data.CommandType.StoredProcedure);
+            }
         }
     }
 }

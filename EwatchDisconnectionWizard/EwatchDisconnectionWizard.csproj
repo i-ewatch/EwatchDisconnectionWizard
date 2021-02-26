@@ -127,6 +127,12 @@
     <Compile Include="Components\Field4Component.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Components\MySqlAlarmComponent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\MySqlAlarmComponent.Designer.cs">
+      <DependentUpon>MySqlAlarmComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\MySqlComponent.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -145,6 +151,7 @@
     <Compile Include="Methods\InitialMethod.cs" />
     <Compile Include="Methods\MySqlMethod.cs" />
     <Compile Include="MySql_Module\AI64.cs" />
+    <Compile Include="MySql_Module\AiConfig.cs" />
     <Compile Include="MySql_Module\AiSetting.cs" />
     <Compile Include="MySql_Module\CaseSetting.cs" />
     <Compile Include="MySql_Module\ElectricSetting.cs" />

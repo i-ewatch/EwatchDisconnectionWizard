@@ -33,7 +33,7 @@ namespace EwatchDisconnectionWizard
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.MySqlTimelabel = new System.Windows.Forms.Label();
-            this.MsSqlTimelabel = new System.Windows.Forms.Label();
+            this.MySqlAlarmTimelabel = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -41,7 +41,7 @@ namespace EwatchDisconnectionWizard
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("新細明體", 20F);
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(16, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(321, 27);
             this.label1.TabIndex = 0;
@@ -51,11 +51,11 @@ namespace EwatchDisconnectionWizard
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("新細明體", 20F);
-            this.label2.Location = new System.Drawing.Point(12, 62);
+            this.label2.Location = new System.Drawing.Point(-1, 62);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(318, 27);
+            this.label2.Size = new System.Drawing.Size(338, 27);
             this.label2.TabIndex = 1;
-            this.label2.Text = "MsSqL系統最後輪巡時間 :";
+            this.label2.Text = "MySqL Alarm最後輪巡時間 :";
             // 
             // MySqlTimelabel
             // 
@@ -67,15 +67,15 @@ namespace EwatchDisconnectionWizard
             this.MySqlTimelabel.TabIndex = 2;
             this.MySqlTimelabel.Text = "1999/1/1 上午 00:00:00";
             // 
-            // MsSqlTimelabel
+            // MySqlAlarmTimelabel
             // 
-            this.MsSqlTimelabel.AutoSize = true;
-            this.MsSqlTimelabel.Font = new System.Drawing.Font("新細明體", 20F);
-            this.MsSqlTimelabel.Location = new System.Drawing.Point(339, 62);
-            this.MsSqlTimelabel.Name = "MsSqlTimelabel";
-            this.MsSqlTimelabel.Size = new System.Drawing.Size(264, 27);
-            this.MsSqlTimelabel.TabIndex = 3;
-            this.MsSqlTimelabel.Text = "1999/1/1 上午 00:00:00";
+            this.MySqlAlarmTimelabel.AutoSize = true;
+            this.MySqlAlarmTimelabel.Font = new System.Drawing.Font("新細明體", 20F);
+            this.MySqlAlarmTimelabel.Location = new System.Drawing.Point(339, 62);
+            this.MySqlAlarmTimelabel.Name = "MySqlAlarmTimelabel";
+            this.MySqlAlarmTimelabel.Size = new System.Drawing.Size(264, 27);
+            this.MySqlAlarmTimelabel.TabIndex = 3;
+            this.MySqlAlarmTimelabel.Text = "1999/1/1 上午 00:00:00";
             // 
             // timer1
             // 
@@ -86,7 +86,7 @@ namespace EwatchDisconnectionWizard
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(631, 106);
-            this.Controls.Add(this.MsSqlTimelabel);
+            this.Controls.Add(this.MySqlAlarmTimelabel);
             this.Controls.Add(this.MySqlTimelabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -103,7 +103,7 @@ namespace EwatchDisconnectionWizard
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label MySqlTimelabel;
-        private System.Windows.Forms.Label MsSqlTimelabel;
+        private System.Windows.Forms.Label MySqlAlarmTimelabel;
         private System.Windows.Forms.Timer timer1;
     }
 }

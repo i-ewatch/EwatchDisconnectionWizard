@@ -30,21 +30,26 @@ namespace EwatchDisconnectionWizard
             mySqlMethod = new MySqlMethod(MySqlSetting);
             mySqlComponent = new MySqlComponent(mySqlMethod);
             mySqlComponent.MyWorkState = true;
+            MySqlAlarmComponent = new MySqlAlarmComponent(mySqlMethod);
+            MySqlAlarmComponent.MyWorkState = true;
             timer1.Interval = 1000;
             timer1.Enabled = true;
         }
         private MySqlMethod mySqlMethod { get; set; }
         private MySqlSetting MySqlSetting { get; set; }
         private MySqlComponent mySqlComponent { get; set; }
+        private MySqlAlarmComponent MySqlAlarmComponent { get; set; }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             MySqlTimelabel.Text = mySqlComponent.ConnectionTime.ToString("G");
+            MySqlAlarmTimelabel.Text = MySqlAlarmComponent.ConnectionTime.ToString("G");
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             mySqlComponent.MyWorkState = false;
+            MySqlAlarmComponent.MyWorkState = false;
             this.Dispose();
         }
     }
