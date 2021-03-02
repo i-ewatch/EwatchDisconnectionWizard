@@ -2,6 +2,7 @@
 using EwatchDisconnectionWizard.Configration;
 using EwatchDisconnectionWizard.Enums;
 using EwatchDisconnectionWizard.MySql_Module;
+using LineNotifyLibrary;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -283,7 +284,6 @@ namespace EwatchDisconnectionWizard.Methods
             return value;
         }
         #endregion
-
         /// <summary>
         /// AI點為設定查詢是否需要比較
         /// </summary>
@@ -311,12 +311,12 @@ namespace EwatchDisconnectionWizard.Methods
         /// 上下限比較紀錄
         /// </summary>
         /// <param name="config">AI點為設定資訊</param>
-        public void Alarm_Procedure(AiConfig config, AI64 aI64)
+        public decimal Alarm_Procedure(AiConfig config, AI64 aI64)
         {
+            decimal[] value = new decimal[64];
             using (var conn = new MySqlConnection(Logscsb.ConnectionString))
             {
                 string Procedure = "AiAlarmProcedure";
-                decimal[] value = new decimal[64];
                 int i = 0;
                 value[i] = aI64.Ai1; i++;
                 value[i] = aI64.Ai2; i++;
@@ -384,6 +384,7 @@ namespace EwatchDisconnectionWizard.Methods
                 value[i] = aI64.Ai64;
                 conn.Execute(Procedure, new { nowTime = aI64.ttime, CaseNo1 = config.CaseNo, AiNo1 = config.AiNo, Ai1 = config.Ai, NowData = value[Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(config.Ai, @"[^0-9]+", "")) - 1] }, commandType: System.Data.CommandType.StoredProcedure);
             }
+            return value[Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(config.Ai, @"[^0-9]+", "")) - 1];
         }
     }
 }
